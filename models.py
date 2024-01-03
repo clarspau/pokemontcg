@@ -17,6 +17,8 @@ class User(db.Model):
     username = db.Column(db.String(50), unique=True, nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String, nullable=False)
+    image_url = db.Column(
+        db.String, default='https://cdn.dribbble.com/users/2192291/screenshots/7482012/media/e829a380ecd3b768f4c6c7a4e3dd63cb.jpg?resize=1600x1200&vertical=center')
     wishlist = db.relationship('PokemonWishlist', back_populates='user')
     collection = db.relationship('PokemonCollection', back_populates='user')
 
