@@ -4,7 +4,6 @@ from flask import Flask, render_template, redirect, url_for, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from models import User, PokemonWishlist, PokemonCollection, connect_db, db, bcrypt
-from seed import seed_database
 
 app = Flask(__name__)
 
@@ -26,4 +25,6 @@ def home():
 
 
 if __name__ == '__main__':
+    from seed import seed_database
+    seed_database()
     app.run(debug=True)
