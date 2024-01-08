@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block js %}
+let likes = {{ like_ids|safe }};
+{% endblock %}
+
+{% block content %}
+<div>
+     <div class="liked-card-container">
+          {% for card in cards %}
+          <div id="{{card.id}}" class="mycard">
+               <div class="card-name">{{ card.name }}</div>
+               <div class="card-rarity">{{ card.rarity }}</div>
+               <!-- <div class="card-price">${{ card.price }}</div> -->
+               <div class="card-price">${{ "{:.2f}".format(card.price) }}</div>
+               <img src="{{ card.image }}" alt="">
+               <button class="like-button clicked"></button>
+          </div>
+          {% endfor %}
+
+          <!-- {% for card in cards %}
+          <div class="card" id="{{ card.id }}">
+               <img src="{{ card.image }}" alt="{{ card.name }}">
+               <p>{{ card.name }}</p>
+               <p>Rarity: {{ card.rarity }}</p>
+               <p>Price: {{ card.price }}</p>
+               <button class="like-button clicked">Remove from Liked</button>
+          </div>
+          {% endfor %} -->
+     </div>
+</div>
+{% endblock %}

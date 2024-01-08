@@ -4,7 +4,7 @@ import json
 import random
 import requests
 from flask import Flask, render_template, redirect, session, flash, request, jsonify, abort
-from models import connect_db, db, User, Wishlist, Collection
+from models import connect_db, db, User, Wishlist, Collection, Like
 from forms import LoginForm, RegisterForm, UserEditForm
 
 app = Flask(__name__)
@@ -173,6 +173,83 @@ def show_set(set_id):
         cards.append(card)
     random_cards = random.sample(cards, min(len(cards), 100))
     return render_template('index.html', sets=sets, cards=random_cards, wishlist=wishlist, collection=collection)
+
+
+@app.route('/<int:user_id>/likes')
+def show_likes(user_id):
+    likes = Like.query.filter_by(user_id=user_id).all()
+    like_ids = [like.card_id for like in likes]
+    json_likes = json.dumps(like_ids)
+
+    cards = []
+
+    for like in likes:
+        url = f'{BASE_URL}cards/{like.card_id}'
+        headers = {'x-api-key': API_KEY}
+        response = requests.get(url, headers=headers)
+        raw_data = response.json()
+        data = raw_data['data']
+
+        # Check if the 'rarity' field is present in the data
+        if 'rarity' in data:
+            rarity = data['rarity']
+        else:
+            rarity = 'Common'
+
+        # Check if the 'cardmarket' and 'averageSellPrice' fields are present in the data
+        if 'cardmarket' in data and 'prices' in data['cardmarket'] and 'averageSellPrice' in data['cardmarket']['prices']:
+            price = data['cardmarket']['prices']['averageSellPrice']
+        else:
+            price = None
+
+        # Append the card information to the list of cards if both 'rarity' and 'price' are present
+        cards.append({
+            'id': data['id'],
+            'name': data['name'],
+            'image': data['images']['small'],
+            'rarity': rarity,
+            'price': price
+        })
+
+    return render_template('liked.html', cards=cards, like_ids=json_likes)
+
+
+@app.route('/<int:id>')
+def show_user(id):
+    user = User.query.filter_by(id=id).first()
+    return render_template('profile.html', user=user)
+
+
+@app.route('/addlike', methods=['POST'])
+def add_like():
+    data = request.get_json()
+    card_id = data.get('card_id')
+    if 'curr_user' in session:
+        user_id = session['curr_user']
+    else:
+        return jsonify({'message': 'Nope.'}), 500
+    print(f'Card Id = {card_id}, User Id = {user_id}')
+    like = Like(user_id=user_id, card_id=card_id)
+
+    db.session.add(like)
+    db.session.commit()
+
+    return jsonify({'message': 'Like added to database.'}), 200
+
+
+@app.route('/deletelike', methods=['POST'])
+def delete_like():
+    user_id = session['curr_user']
+    data = request.get_json()
+    card_id = data.get('card_id')
+
+    like = Like.query.filter_by(user_id=user_id, card_id=card_id).first()
+    if like:
+        db.session.delete(like)
+        db.session.commit()
+        return jsonify({'message': 'Like deleted from database.'}), 200
+    else:
+        return jsonify({'message': 'Like not found in database.'}), 404
 
 
 @app.route('/<int:user_id>/add_to_wishlist', methods=['POST'])

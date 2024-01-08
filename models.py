@@ -81,6 +81,16 @@ class User(db.Model):
             return False
 
 
+class Like(db.Model):
+    """Like model for storing user likes."""
+
+    __tablename__ = 'likes'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    card_id = db.Column(db.Text, nullable=False)
+
+
 def connect_db(app):
     """Connect this database to the provided Flask app."""
     db.app = app
