@@ -1,28 +1,15 @@
-<!DOCTYPE html>
-<html>
-     <head>
-          <title>My Pokémon TCG</title>
-     </head>
-     <body>
-          <header>
-               <h1>Welcome to My Pokémon TCG<< /h1>
-          </header>
+{% extends 'base.html' %}
 
-          <nav>
-               <ul>
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/register">Register</a></li>
-                    <li><a href="/login">Login</a></li>
-               </ul>
-          </nav>
+{% block content %}
+<div class="home-container mt-5 text-center" style="margin-block-start: 100px;">
 
-          <main>
-               <h2>Gotta catch 'em all!</h2>
-               <p>Here is some featured content.</p>
-          </main>
 
-          <footer>
-               <p>&copy; 2022 My Website. All rights reserved.</p>
-          </footer>
-     </body>
-</html>
+     <div style="margin-block-start: 100px;">
+          <h1 id="hometitle">Welcome to my Pokémon TCG!</h1>
+          {% if 'curr_user' in session %}
+          <h1 id="homeuser">Logged in as: {{user.username}}</h1>
+          {% endif %}
+
+     </div>
+</div>
+{% endblock %}

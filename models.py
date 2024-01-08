@@ -9,6 +9,31 @@ bcrypt = Bcrypt()
 db = SQLAlchemy()
 
 
+class Wishlist(db.Model):
+    """Pokemon Wishlist model for storing user wishlists."""
+
+    __tablename__ = 'wishlists'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user = db.relationship('User', back_populates='wishlist')
+    pokemon_name = db.Column(db.Text, nullable=False)
+    date_added = db.Column(db.DateTime)
+    acquired = db.Column(db.Boolean, default=False)
+
+
+class Collection(db.Model):
+    """Pokemon Collection model for storing user collections."""
+
+    __tablename__ = 'collections'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user = db.relationship('User', back_populates='collection')
+    pokemon_name = db.Column(db.Text, nullable=False)
+    date_added = db.Column(db.DateTime)
+
+
 class User(db.Model):
     """User model for storing user information."""
 
@@ -22,8 +47,8 @@ class User(db.Model):
         db.String,
         default='https://cdn.dribbble.com/users/2192291/screenshots/7482012/media/e829a380ecd3b768f4c6c7a4e3dd63cb.jpg?resize=1600x1200&vertical=center'
     )
-    wishlist = db.relationship('PokemonWishlist', back_populates='user')
-    collection = db.relationship('PokemonCollection', back_populates='user')
+    wishlist = db.relationship('Wishlist', back_populates='user')
+    collection = db.relationship('Collection', back_populates='user')
 
     def __repr__(self):
         return f"<User #{self.id}: {self.username}>"
@@ -54,31 +79,6 @@ class User(db.Model):
             return user
         else:
             return False
-
-
-class PokemonWishlist(db.Model):
-    """PokemonWishlist model for storing user wishlists."""
-
-    __tablename__ = 'wishlists'
-
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    user = db.relationship('User', back_populates='wishlist')
-    pokemon_name = db.Column(db.Text, nullable=False)
-    date_added = db.Column(db.DateTime)
-    acquired = db.Column(db.Boolean, default=False)
-
-
-class PokemonCollection(db.Model):
-    """PokemonCollection model for storing user collections."""
-
-    __tablename__ = 'collections'
-
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    user = db.relationship('User', back_populates='collection')
-    pokemon_name = db.Column(db.Text, nullable=False)
-    date_added = db.Column(db.DateTime)
 
 
 def connect_db(app):

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block js %}
+let likes = {{ like_ids|safe }};
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+     <div class="row">
+          <div class="col-md-3 sidebar-container">
+               <div class="text-center">
+                    {% for set in sets %}
+                    <a href="/index/{{set.id}}" class="btn btn-primary btn-block sets">{{set.name}}</a>
+                    {% endfor %}
+               </div>
+          </div>
+          <div class="col-md-9">
+               <div class="card-container">
+                    {% for card in cards %}
+                    <div id="{{card.id}}" class="mycard">
+                         <div class="card-name">{{ card.name }}</div>
+                         {% if card.rarity %}
+                         <div class="card-rarity">{{ card.rarity }}</div>
+                         {% else %}
+                         <div class="card-rarity">Common</div>
+                         {% endif %}
+                         <div class="card-price">${{ "{:.2f}".format(card.cardmarket.prices.averageSellPrice) }}</div>
+                         <img src="{{ card.images.small }}" alt="">
+                         <div class="like-button"></div>
+                    </div>
+                    {% endfor %}
+               </div>
+          </div>
+     </div>
+</div>
+{% endblock %}

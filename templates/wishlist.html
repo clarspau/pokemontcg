@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+     <h1 class="text-center mb-4">Wishlist</h1>
+     {% if wishlist %}
+     <ul class="list-group">
+          {% for item in wishlist %}
+          <li class="list-group-item">{{ item.pokemon_name }}</li>
+          {% endfor %}
+     </ul>
+     {% else %}
+     <p class="text-center">Your wishlist is empty.</p>
+     {% endif %}
+</div>
+{% endblock %}

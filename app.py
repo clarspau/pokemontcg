@@ -3,7 +3,7 @@
 import json
 import random
 import requests
-from flask import Flask, render_template, redirect, session, flash, request, jsonify
+from flask import Flask, render_template, redirect, session, flash, request, jsonify, abort
 from models import connect_db, db, User, Wishlist, Collection
 from forms import LoginForm, RegisterForm, UserEditForm
 
@@ -14,11 +14,11 @@ app.app_context().push()
 app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql:///pokemon"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_ECHO"] = True
-app.config["SECRET_KEY"] = "mikeisabeast"
+app.config["SECRET_KEY"] = "whoisthatpokemon"
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
 # Pokemon TCG API Configuration
-API_KEY = ' '  # Enter your API key here
+API_KEY = 'ce11a777-d3b8-4be0-a68a-c32d7d05a204'  # Enter your API key here
 BASE_URL = 'https://api.pokemontcg.io/v2/'
 
 # Connect to the database
@@ -31,11 +31,15 @@ db.create_all()
 
 @app.route('/')
 def homepage():
+    """Redirect to the home page."""
+
     return redirect('/home')
 
 
 @app.route('/home')
 def show_home():
+    """Show the home page with user information."""
+
     if 'curr_user' in session:
         id = session['curr_user']
         user = User.query.get(id)
@@ -47,6 +51,8 @@ def show_home():
 
 @app.route('/login', methods=['GET', 'POST'])
 def show_login():
+    """Show the login page and handle user authentication."""
+
     form = LoginForm()
 
     if form.validate_on_submit():
@@ -60,11 +66,14 @@ def show_login():
         else:
             flash('Incorrect Username or Password!')
             return redirect('/login')
+
     return render_template('login.html', form=form)
 
 
 @app.route('/register', methods=['GET', 'POST'])
 def show_register():
+    """Show the registration page and handle user registration."""
+
     form = RegisterForm()
 
     if form.validate_on_submit():
@@ -85,6 +94,8 @@ def show_register():
 
 @app.route('/<int:user_id>/wishlist')
 def show_wishlist(user_id):
+    """Show the user's wishlist."""
+
     user = User.query.get(user_id)
     wishlist = Wishlist.query.filter_by(user_id=user_id).all()
 
@@ -93,6 +104,8 @@ def show_wishlist(user_id):
 
 @app.route('/<int:user_id>/collection')
 def show_collection(user_id):
+    """Show the user's collection."""
+
     user = User.query.get(user_id)
     collection = Collection.query.filter_by(user_id=user_id).all()
 
@@ -100,6 +113,8 @@ def show_collection(user_id):
 
 
 def get_setlist():
+    """Get a list of card sets."""
+
     url = f'{BASE_URL}sets'
     sets = []
     headers = {'x-api-key': API_KEY}
@@ -117,6 +132,8 @@ def get_setlist():
 
 
 def get_setlist_index():
+    """Get a list of card sets for the index page."""
+
     url = f'{BASE_URL}sets'
     sets = []
     headers = {'x-api-key': API_KEY}
@@ -130,12 +147,16 @@ def get_setlist_index():
 
 @app.route('/index')
 def show_index():
+    """Show the index page with a list of card sets."""
+
     sets = get_setlist_index()
     return render_template('set_index.html', sets=sets)
 
 
 @app.route('/index/<set_id>')
 def show_set(set_id):
+    """Show the cards for a specific card set."""
+
     if 'curr_user' in session:
         user_id = session['curr_user']
         wishlist = Wishlist.query.filter_by(user_id=user_id).all()
@@ -156,6 +177,7 @@ def show_set(set_id):
 
 @app.route('/<int:user_id>/add_to_wishlist', methods=['POST'])
 def add_to_wishlist(user_id):
+    """Add a card to the user's wishlist."""
     data = request.get_json()
     card_id = data.get('card_id')
 
@@ -169,6 +191,7 @@ def add_to_wishlist(user_id):
 
 @app.route('/<int:user_id>/add_to_collection', methods=['POST'])
 def add_to_collection(user_id):
+    """Add a card to the user's collection."""
     data = request.get_json()
     card_id = data.get('card_id')
 
@@ -182,6 +205,7 @@ def add_to_collection(user_id):
 
 @app.route('/<int:user_id>/remove_from_wishlist', methods=['POST'])
 def remove_from_wishlist(user_id):
+    """Remove a card from the user's wishlist."""
     data = request.get_json()
     card_id = data.get('card_id')
 
@@ -198,6 +222,7 @@ def remove_from_wishlist(user_id):
 
 @app.route('/<int:user_id>/remove_from_collection', methods=['POST'])
 def remove_from_collection(user_id):
+    """Remove a card from the user's collection."""
     data = request.get_json()
     card_id = data.get('card_id')
 
@@ -214,12 +239,26 @@ def remove_from_collection(user_id):
 
 @app.route('/logout')
 def logout():
+    """Logout the user."""
     session.pop('curr_user', None)
     return redirect('/home')
 
 
+@app.route('/<int:user_id>')
+def show_profile(user_id):
+    """Show the user's profile."""
+    user = User.query.get(user_id)
+
+    # Check if the user is found
+    if not user:
+        abort(404)
+
+    return render_template('profile.html', user=user)
+
+
 @app.route('/<int:user_id>/edit', methods=['GET', 'POST'])
 def edit_user(user_id):
+    """Edit the user's profile information."""
     user = User.query.get(user_id)
     form = UserEditForm(obj=user)
 
