@@ -3,20 +3,26 @@
 import json
 import random
 import requests
+import os
 from flask import Flask, render_template, redirect, session, flash, request, jsonify, abort
 from models import connect_db, db, User, Wishlist, Collection, Like
 from forms import LoginForm, RegisterForm, UserEditForm
 from flask_sqlalchemy import SQLAlchemy
+from flask_debugtoolbar import DebugToolbarExtension
 
 app = Flask(__name__)
 app.app_context().push()
 
 # Database Configuration
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql:///pokemon"
+app.config['SQLALCHEMY_DATABASE_URI'] = (
+    os.environ.get('DATABASE_URL', 'postgresql:///pokemon'))
+
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_ECHO"] = True
-app.config["SECRET_KEY"] = "whoisthatpokemon"
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "whoisthatpokemon")
+
+toolbar = DebugToolbarExtension(app)
 
 # Pokemon TCG API Configuration
 API_KEY = 'ce11a777-d3b8-4be0-a68a-c32d7d05a204'  # Enter your API key here
