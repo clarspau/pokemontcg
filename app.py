@@ -6,6 +6,7 @@ import requests
 from flask import Flask, render_template, redirect, session, flash, request, jsonify, abort
 from models import connect_db, db, User, Wishlist, Collection, Like
 from forms import LoginForm, RegisterForm, UserEditForm
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.app_context().push()
@@ -22,8 +23,7 @@ API_KEY = 'ce11a777-d3b8-4be0-a68a-c32d7d05a204'  # Enter your API key here
 BASE_URL = 'https://api.pokemontcg.io/v2/'
 
 # Connect to the database
-connect_db(app)
-db.create_all()
+db = SQLAlchemy(app)
 
 # Debug Toolbar (commented out for now)
 # toolbar = DebugToolbarExtension(app)
@@ -351,4 +351,5 @@ def edit_user(user_id):
 
 
 if __name__ == '__main__':
+    db.create_all()
     app.run(debug=True)
