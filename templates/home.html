@@ -1,21 +1,15 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="home-container mt-5 text-center" style="margin-block-start: 100px;">
+<div class="home-container mt-5 text-center" style="margin-top: 100px;">
     <!-- Added text-center class for center alignment -->
-
-    <div style="margin-block-start: 100px;">
-
+    <div style="margin-top: 100px;">
         <h1 id="hometitle">Pokémon TCG Collection!</h1>
-
         {% if 'curr_user' in session %}
-        <h1 id="homeuser">Welcome back {{user.username}}</h1>
-        <h3>Gotta catch 'em all!</h3>
+        <h1 id="homeuser">Welcome back {{user.username}}!</h1>
         {% endif %}
-
         <img src="https://wallpaper.dog/large/744473.jpg" alt="" class="img-fluid mx-auto">
         <!-- Added img-fluid class for responsive image and mx-auto class for center alignment -->
-
     </div>
 </div>
 {% endblock %}
