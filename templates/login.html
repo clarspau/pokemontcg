@@ -4,36 +4,36 @@
 
 {% block content %}
 <div class="container mt-5">
-     <div class="row justify-content-center" style="margin-top: 100px;">
-          <div class="col-md-6">
-               <div class="card">
-                    <div class="card-header">
-                         <h1 class="text-center">Login as Existing User</h1>
-                    </div>
-                    <div class="card-body">
-                         {% with messages = get_flashed_messages(with_categories=true) %}
-                         {% if messages %}
-                         {% for category, message in messages %}
-                         <p class="alert alert-{{ category }}">{{ message }}</p>
-                         {% endfor %}
-                         {% endif %}
-                         {% endwith %}
-                         <form method="POST" class="needs-validation" novalidate>
-                              {{ form.hidden_tag() }}
-                              {% for field in form if field.widget.input_type != 'hidden' %}
-                              <div class="form-group">
-                                   {{ field.label(class="form-control-label") }}
-                                   {{ field(class="form-control") }}
-                                   <div class="invalid-feedback">
-                                        {{ field.errors|join(', ') }}
-                                   </div>
-                              </div>
-                              {% endfor %}
-                              <button type="submit" class="btn btn-primary btn-block">Login!</button>
-                         </form>
-                    </div>
-               </div>
-          </div>
-     </div>
+  <div class="row justify-content-center" style="margin-top: 100px;">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h1 class="text-center">Login as Existing User</h1>
+        </div>
+        <div class="card-body">
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                <p class="alert alert-{{ category }}">{{ message }}</p>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+          <form method="POST" class="needs-validation" novalidate>
+            {{ form.hidden_tag() }} 
+            {% for field in form if field.widget.input_type != 'hidden' %}
+              <div class="form-group">
+                {{ field.label(class="form-control-label") }}
+                {{ field(class="form-control") }}
+                <div class="invalid-feedback">
+                  {{ field.errors|join(', ') }}
+                </div>
+              </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary btn-block">Login!</button>
+          </form> 
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}

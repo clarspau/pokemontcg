@@ -6,19 +6,20 @@ from wtforms.validators import DataRequired, Length
 class RegisterForm(FlaskForm):
 
     username = StringField('Username', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[Length(min=5)])
-    image_url = StringField('Profile Image Link')
+    password = PasswordField('Password', validators=[Length(min=6)])
+    profile_img = StringField('Profile Image Link')
     email = StringField('Email', validators=[DataRequired()])
+    about_me = TextAreaField('Tell us about yourself')
 
 
 class LoginForm(FlaskForm):
 
     username = StringField('Username', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[Length(min=5)])
-
+    password = PasswordField('Password', validators=[Length(min=6)])
 
 class UserEditForm(FlaskForm):
 
     username = StringField('Username')
     email = StringField('Email')
-    image_url = StringField('Profile Image')
+    profile_img = StringField('Profile Image')
+    about_me = TextAreaField('Tell us about yourself')

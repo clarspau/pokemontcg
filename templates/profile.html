@@ -2,37 +2,20 @@
 
 {% block content %}
 <div class="container mt-5">
-     <div class="row justify-content-center" style="margin-block-start: 100px;">
-          <div class="col-md-4 text-center">
-               <img src="{{ user.image_url }}" alt="" class="img-fluid rounded-circle mb-3">
-               <h1>{{ user.username }}</h1>
-
-               <!-- <div class="mt-3">
-                    <h4>Wishlist</h4>
-                    <ul>
-                         {% for item in user.wishlist %}
-                         <li>{{ item.pokemon_name }}</li>
-                         {% endfor %}
-                    </ul>
-               </div>
-
-               <div class="mt-3">
-                    <h4>Collection</h4>
-                    <ul>
-                         {% for item in user.collection %}
-                         <li>{{ item.pokemon_name }}</li>
-                         {% endfor %}
-                    </ul>
-               </div> -->
-
-               <div class="mt-3">
-                    <p><a href="/{{ user.id }}/likes" class="btn btn-primary">TCG Collection</a></p>
-               </div>
-
-               <div class="mt-3">
-                    <p><a href="/{{ user.id }}/edit" class="btn btn-secondary">Edit Profile</a></p>
-               </div>
-          </div>
-     </div>
+    <div class="row justify-content-center" style="margin-block-start: 100px;">
+        <div class="col-md-4 text-center">
+            <img src="{{user.profile_img}}" alt="" class="img-fluid rounded-circle mb-3">
+            <h1>{{user.username}}</h1>
+            <div class="mt-3">
+                <p>{{user.about_me}}</p>
+            </div>
+            <div class="mt-3">
+                <p><a href="/{{user.id}}/likes" class="btn btn-primary">Liked Cards</a></p>
+            </div>
+            <div class="mt-3">
+                <p><a href="/{{user.id}}/edit" class="btn btn-secondary">Edit Profile</a></p>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

@@ -1,99 +1,85 @@
-/* This is for the page that shows the cards. This looks decent as of now.... */
+
+
+/* This is for the page that shows the cards. */
 
 
 .card-container {
-     position: relative;
-     display: flex;
-     flex-wrap: wrap;
-     justify-content: flex-start;
-     margin-inline-start: 200px;
-     inset-block-start: 150px;
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin-inline-start: 200px;
+  inset-block-start: 150px;
 }
 
 .liked-card-container {
-     position: relative;
-     display: flex;
-     flex-wrap: wrap;
-     justify-content: center;
-     /* change this from 'flex-start' to 'center' */
-     margin-inline-start: auto;
-     /* remove margin-left */
-     margin-inline-end: auto;
-     /* remove margin-right */
-     inset-block-start: 150px;
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* change this from 'flex-start' to 'center' */
+  margin-inline-start: auto; /* remove margin-left */
+  margin-inline-end: auto; /* remove margin-right */
+  inset-block-start: 150px;
 }
 
 .mycard {
-     position: relative;
-     display: flex;
-     flex-direction: column;
-     inline-size: 250px;
-     block-size: 443px;
-     margin: 20px;
-     padding: 10px;
-     background-color: #fff;
-     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  inline-size: 250px;
+  block-size: 443px;
+  margin: 20px;
+  padding: 10px;
+  background-color: #fff;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
 .card-name {
-     font-size: 20px;
-     font-weight: bold;
-     margin-block-end: 10px;
+  font-size: 20px;
+  font-weight: bold;
+  margin-block-end: 10px;
 }
 
 .card-rarity {
-     font-size: 16px;
-     margin-block-end: 10px;
+  font-size: 16px;
+  margin-block-end: 10px;
 }
 
 .card-price {
-     font-size: 16px;
-     margin-block-end: 10px;
+  font-size: 16px;
+  margin-block-end: 10px;
 }
 
 
-
-
-
-
-
-
-/* This is for the like button.*/
+/* This is for the like button. */
 
 
 .like-button {
-     position: absolute;
-     inset-block-start: 10px;
-     inset-inline-end: 10px;
-     inline-size: 40px;
-     block-size: 40px;
-     background-color: #eee;
-     border-radius: 50%;
-     border: 2px solid #ccc;
-     cursor: pointer;
-     z-index: 1;
+  position: absolute;
+  inset-block-start: 10px;
+  inset-inline-end: 10px;
+  inline-size: 40px;
+  block-size: 40px;
+  background-color: #eee;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  cursor: pointer;
+  z-index: 1;
 }
 
 .like-button::before {
-     content: "♥";
-     font-size: 20px;
-     color: #ccc;
-     position: absolute;
-     inset-block-start: 50%;
-     inset-inline-start: 50%;
-     transform: translate(-50%, -50%);
+  content: "♥";
+  font-size: 20px;
+  color: #ccc;
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .like-button.clicked::before {
-     color: red;
+  color: red;
 }
-
-
-
-
-
-
-
 
 
 
@@ -101,53 +87,21 @@
 
 
 .sidebar-container {
-     position: fixed;
-     inset-block-start: 75px;
-     /* equivalent to inset-block-start: 75px; */
-     inset-block-end: 0;
-     /* equivalent to inset-block-end: 0; */
-     inset-inline-start: 0;
-     /* equivalent to inset-inline-start: 0; */
-     overflow-y: auto;
-     padding: 15px;
-     background-color: #f8f9fa;
-     z-index: 1000;
-     inline-size: 250px;
-     /* equivalent to inline-size: 250px; */
+  position: fixed;
+  inset-block-start: 75px; /* height of the navbar */
+  inset-block-end: 0;
+  inset-inline-start: 0;
+  overflow-y: auto;
+  padding: 15px;
+  background-color: #f8f9fa;
+  z-index: 1000;
+  inline-size: 250px; /* specify the width of the sidebar */
 }
 
 .sets {
-     margin-block-end: 10px;
-     /* equivalent to margin-block-end: 10px; */
-     inline-size: 100%;
-     /* equivalent to inline-size: 100%; */
+  margin-block-end: 10px;
+  inline-size: 100%; /* make buttons full width inside the sidebar */
 }
-
-/* Your other styles */
-.color-red {
-     color: red;
-}
-
-.color-green {
-     color: green;
-}
-
-.color-blue {
-     color: blue;
-}
-
-.color-black {
-     color: black;
-}
-
-.color-white {
-     color: white;
-}
-
-.color-gold {
-     color: gold;
-}
-
 
 
 /* This is for the homepage */
@@ -155,26 +109,16 @@
 
 
 #hometitle {
-     text-align: center;
-     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-     font-size: 36px;
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 36px;
 }
 
 #homeuser {
-     text-align: center;
-     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-     font-size: 24px;
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 24px;
 }
-
-
-
-
-
-
-
-
-
-
 
 
 /* This is for the navbar, should be present on all pages. */
@@ -182,40 +126,32 @@
 
 
 #navmain {
-     display: flex;
-     justify-content: space-between;
-     align-items: center;
-     background-color: #fff;
-     block-size: 75px;
-     padding: 0 20px;
-     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-     position: fixed;
-     inset-block-start: 0;
-     inset-inline-start: 0;
-     inset-inline-end: 0;
-     z-index: 1001;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  block-size: 75px;
+  padding: 0 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  position: fixed;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
+  z-index: 1001;
 }
 
 #navmain a {
-     text-decoration: none;
-     font-weight: bold;
-     font-size: 18px;
-     color: #000;
-     transition: all 0.2s ease-in-out;
-     margin-inline-end: 20px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 18px;
+  color: #000;
+  transition: all 0.2s ease-in-out;
+  margin-inline-end: 20px;
 }
 
 #navmain a:hover {
-     color: #f00;
+  color: #f00;
 }
-
-
-
-
-
-
-
-
 
 
 
@@ -226,21 +162,21 @@
 
 
 .row {
-     display: flex;
-     justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 /* Hover effect for image and title */
 .hover-effect {
-     transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 
 .hover-effect:hover {
-     color: #007bff;
-     transform: scale(1.05);
+  color: #007bff;
+  transform: scale(1.05);
 }
 
 .custom-image-size {
-     inline-size: 100%;
-     object-fit: cover;
+  inline-size: 100%;
+  object-fit: cover;
 }
