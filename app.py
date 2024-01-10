@@ -1,5 +1,6 @@
+"""Pokémon TCG Flask App"""
+
 from flask import Flask, render_template, redirect, session, flash, request, jsonify
-# from flask_debugtoolbar import DebugToolbarExtension
 from models import connect_db, db, User, Like
 from forms import LoginForm, RegisterForm, UserEditForm
 import requests
@@ -8,29 +9,34 @@ import json
 
 app = Flask(__name__)
 app.app_context().push()
+
+# Database Configuration
 app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql:///pokemontcg"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_ECHO"] = True
 app.config["SECRET_KEY"] = "who-is-that-pokemon"
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
+# Pokemon TCG API Configuration
 API_KEY = 'ce11a777-d3b8-4be0-a68a-c32d7d05a204'
 BASE_URL = 'https://api.pokemontcg.io/v2/'
 
-
+# Connect to the database and create tables
 connect_db(app)
 db.create_all()
-
-# toolbar = DebugToolbarExtension(app)
 
 
 @app.route('/')
 def homepage():
+    """Redirect to the home page."""
+
     return redirect('/home')
 
 
 @app.route('/home')
 def show_home():
+    """Show the home page with user information."""
+
     if 'curr_user' in session:
         id = session['curr_user']
         user = User.query.filter_by(id=id).first()
@@ -42,6 +48,8 @@ def show_home():
 
 @app.route('/login', methods=['GET', 'POST'])
 def show_login():
+    """Show the login page and handle user authentication."""
+
     form = LoginForm()
 
     if form.validate_on_submit():
@@ -55,11 +63,14 @@ def show_login():
         else:
             flash('Incorrect Username or Password!')
             return redirect('/login')
+
     return render_template('login.html', form=form)
 
 
 @app.route('/register', methods=['GET', 'POST'])
 def show_register():
+    """Show the registration page and handle user registration."""
+
     form = RegisterForm()
 
     if form.validate_on_submit():
@@ -81,6 +92,8 @@ def show_register():
 
 @app.route('/<int:id>/likes')
 def show_likes(id):
+    """Show the liked cards for a specific user."""
+
     likes = Like.query.filter_by(user_id=id).all()
     like_ids = [like.card_id for like in likes]
     json_likes = json.dumps(like_ids)
@@ -119,6 +132,8 @@ def show_likes(id):
 
 
 def get_setlist():
+    """Get a list of card sets."""
+
     url = f'{BASE_URL}sets'
     sets = []
     headers = {'x-api-key': API_KEY}
@@ -136,6 +151,8 @@ def get_setlist():
 
 
 def get_setlist_index():
+    """Get a list of card sets for the index."""
+
     url = f'{BASE_URL}sets'
     sets = []
     headers = {'x-api-key': API_KEY}
@@ -149,12 +166,15 @@ def get_setlist_index():
 
 @app.route('/index')
 def show_index():
+    """Show the index page with a list of card sets."""
+
     sets = get_setlist_index()
     return render_template('set_index.html', sets=sets)
 
 
 @app.route('/index/<set_id>')
 def show_set(set_id):
+    """Show the cards for a specific card set."""
 
     if 'curr_user' in session:
         user_id = session['curr_user']
@@ -177,19 +197,22 @@ def show_set(set_id):
 
 @app.route('/<int:id>')
 def show_user(id):
+    """Show the user's profile."""
+
     user = User.query.filter_by(id=id).first()
     return render_template('profile.html', user=user)
 
 
 @app.route('/addlike', methods=['POST'])
 def add_like():
+    """Add a liked card to the user's collection."""
+
     data = request.get_json()
     card_id = data.get('card_id')
     if 'curr_user' in session:
         user_id = session['curr_user']
     else:
         return jsonify({'message': 'Nope.'}), 500
-    print(f'Card Id = {card_id}, User Id = {user_id}')
     like = Like(user_id=user_id, card_id=card_id)
 
     db.session.add(like)
@@ -200,6 +223,8 @@ def add_like():
 
 @app.route('/deletelike', methods=['POST'])
 def delete_like():
+    """Delete a liked card from the user's collection."""
+
     user_id = session['curr_user']
     data = request.get_json()
     card_id = data.get('card_id')
@@ -215,12 +240,16 @@ def delete_like():
 
 @app.route('/logout')
 def logout():
+    """Logout the user."""
+
     session.pop('curr_user', None)
     return redirect('/home')
 
 
 @app.route('/<int:id>/edit', methods=['GET', 'POST'])
 def edit_user(id):
+    """Show the edit user page and handle user profile updates."""
+
     user = User.query.filter_by(id=id).first()
     form = UserEditForm(obj=user)
 
