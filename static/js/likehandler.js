@@ -11,16 +11,6 @@ $(document).ready(function () {
 
   $(".like-button").on("click", function () {
     let cardId = $(this).parent().attr("id");
-    // let isClicked = $(this).hasClass("clicked");
-
-    // if (!isClicked) {
-    //   likes.push(cardId);
-    // } else {
-    //   let index = likes.indexOf(cardId);
-    //   if (index !== -1) {
-    //     likes.splice(index, 1);
-    //   }
-    // }
 
     $(this).toggleClass("clicked");
     console.log(likes);
